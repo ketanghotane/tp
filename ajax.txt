@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="ajax.js"></script>
+    <style>
+        div{
+            width: 350px;
+            height: 225px;
+            /* background-color: cyan; */
+            margin-left: auto;
+            margin-right: auto;
+        }
+        td{
+            padding: 10px 10px 15px 15px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+    <h2>Product Details</h2>
+    <table border="1px solid black">  
+        <tr>
+            <th>
+                Category
+            </th>
+            <td>
+                    <select name="category" id="category" onchange="populateProducts()">
+                            <!-- <option value="electronics">Electronics</option>
+                            <option value="it">IT</option>
+                            <option value="computerscience">Computer Science</option>
+                            <option value="civil">Civil</option> -->
+                            <option value="-1">----Select Product----</option>
+                            <option value="electronics">Electronics</option>
+                            <option value="grocery">Grocery</option>                            
+                          </select>
+            </td>
+        </tr>
+
+        <tr>
+            <th>Product:</th>
+            <td>
+                    <select name= "prd" id="prd">
+                            <!-- <option value="">----</option>
+                            <option value="">----</option>
+                            <option value="">----</option>
+                            <option value="">----</option> -->
+                            <option value="-1">----Select Product----</option>                            
+                          </select>
+            </td>
+        </tr>
+
+        <tr>
+            <th>Quantity</th>
+            <td>
+                <input type="number" name="quantity" id="quantity">
+            </td>
+        </tr>
+
+        <tr>
+                <th>Total Price</th>
+                <td>
+                    <input type="number" name="tprice" id="tprice">
+                </td>
+            </tr>
+
+            <tr>
+                <th>
+                    <input type="submit" value="submit">
+                </th>
+                <th>
+                        <input type="button" value="Clear"> 
+                </th>
+            </tr>
+
+
+    </table>
+    </div>
+</body>
+</html>
+----------------------------------------------------------------------------------------------------
+
+{
+    "electronics" :[
+    {
+        "ProductName":"Television" , "productPrice" : "20000"
+    },
+    {
+        "ProductName":"Laptop", "productPrice":"30000"
+    },
+    {
+        "ProductName":"Phone", "productPrice":"10000"
+    }
+],
+"grocery":[{
+    "productName":"Soap","productPrice":"40"},
+    {"productName":"Washing Powder","productPrice":"90"}
+]
+}
+-------------------------------------------------------------------------------------------------
+
+function populateProducts(){
+    
+    var e = document.getElementById("category");
+    var strCategory = e.options[e.selectedIndex].value;
+   var strOptions="";
+    var xhr = new XMLHttpRequest();
+    xhr.open('GET','js/products.json', true);
+    xhr.responseType = "text";
+    xhr.send();
+
+
+    xhr.onload = function(){
+    if(xhr.status == 200){
+    var data = JSON.parse(xhr.responseText);
+    if(strCategory == "electronics"){
+        for(i=0;i<data.electronics.length; i++){
+            var temp = "<option>"+data.electronics[i].ProductName+"</option>"
+            strOptions = strOptions + temp;
+            // alert(products.electronics[i].productName)
+        }
+    }
+
+    else if(strCategory == "grocery"){
+        for(i=0;i<data.grocery.length; i++){
+            var temp = "<option>"+data.grocery[i].productName+"</option>"
+            strOptions = strOptions + temp;
+            // alert(products.grocery[i].productName)
+    }
+
+        }
+    }
+    document.getElementById("prd").innerHTML=strOptions;
+}
+}
+
+function calculateTotal(){
+    
+}
